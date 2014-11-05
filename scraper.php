@@ -49,7 +49,7 @@ require_once('simple_html_dom/simple_html_dom.php');
 		if($nb_PR_closed > 0)
 			$ratio_PR = $nb_PR_open / $nb_PR_closed;
 
-		return "$ratio_issues;$ratio_PR";
+		return "$nb_issues_open;$nb_issues_closed;$ratio_issues;$nb_PR_open;$nb_PR_closed;$ratio_PR";
 	}
 ?>
 Repo;Issues open;Issues closed;Ratio issues open/closed;PR open;PR closedRatio PR open/closed
