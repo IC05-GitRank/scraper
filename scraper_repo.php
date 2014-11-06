@@ -42,7 +42,7 @@
 		/********************************
 			COMMITS
 		*********************************/
-		$html = file_get_html('http://github.com/'.$repo.'/commits/master');
+		$html = file_get_html('http://github.com/'.$repo.'/commits');
 
 		// Last commit
 		$value = $html->find('div.commits-listing div.commit-group-title');
