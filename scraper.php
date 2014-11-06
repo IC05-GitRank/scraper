@@ -9,7 +9,8 @@
 	echo '<p id="repos_csv">
 		Repo;
 		Issues open;Issues closed;Ratio issues open/closed;
-		PR open;PR closedRatio PR open/closed<br />
+		PR open;PR closedRatio;PR open/closed;
+		nb jours dernier commit;commit sous 3 mois<br />
 	';
 	foreach ($repos as $repo) {
 		echo '<span>'.$repo.'</span><br />

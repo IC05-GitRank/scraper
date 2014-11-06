@@ -38,7 +38,25 @@
 		if($nb_PR_closed > 0)
 			$ratio_PR = $nb_PR_open / $nb_PR_closed;
 
-		return "$repo;$nb_issues_open;$nb_issues_closed;$ratio_issues;$nb_PR_open;$nb_PR_closed;$ratio_PR";
+
+		/********************************
+			COMMITS
+		*********************************/
+		$html = file_get_html('http://github.com/'.$repo.'/commits/master');
+
+		// Last commit
+		$value = $html->find('div.commits-listing div.commit-group-title');
+		$value = str_replace('Commits on ', '', trim($value[0]->plaintext));
+		$date_last_commit = new DateTime($value);
+		$now = new DateTime();
+		$nb_jours_last_commit = $now->diff($date_last_commit)->format("%a");
+		
+		// Commit depuis 3 mois
+		$commit_since_3_months = 'oui';
+		if($nb_jours_last_commit > 91)
+			$commit_since_3_months = 'non';
+
+		return "$repo;$nb_issues_open;$nb_issues_closed;$ratio_issues;$nb_PR_open;$nb_PR_closed;$ratio_PR;$nb_jours_last_commit;$commit_since_3_months";
 	}
 	echo scraper_repo(@$_GET['name']);
 ?>
