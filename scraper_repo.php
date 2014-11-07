@@ -17,6 +17,13 @@
 		$now = new DateTime();
 
 		/********************************
+			HOME
+		*********************************/
+		$html = file_get_html('http://github.com/'.$repo.'');
+		$nb_commits = $html->find('ul.numbers-summary li.commits a span.num');
+		$nb_commits = extractNumber($nb_commits[0]->plaintext);
+
+		/********************************
 			ISSUES
 		*********************************/
 		$html = file_get_html('http://github.com/'.$repo.'/issues');
@@ -81,7 +88,10 @@
 		if($nb_jours_last_commit > 91)
 			$commit_since_3_months = 'non';
 
-		return "$repo;$nb_issues_open;$nb_issues_closed;$ratio_issues;$nb_PR_open;$nb_PR_closed;$ratio_PR;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months";
+		return 	"$repo".
+				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
+				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
+				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months";
 	}
 	echo scraperRepo(@$_GET['name']);
 ?>
