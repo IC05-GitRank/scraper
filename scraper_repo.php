@@ -2,13 +2,9 @@
 	function extractNumber($s)
 	{
 		return 	intval(
-					str_replace(',', '', // 3,666 to 3666
-						trim(
-							preg_replace('/[a-zA-Z]/','',
-								htmlspecialchars_decode(
-									$s
-								)
-							)
+					preg_replace('/[^0-9]/','',
+						htmlspecialchars_decode(
+							$s
 						)
 					)
 				);
