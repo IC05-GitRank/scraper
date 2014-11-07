@@ -9,9 +9,9 @@
 	echo '<p id="repos_csv">
 		Repo
 		;Issues open;Issues closed;Ratio issues open/closed
-		;PR open;PR closedRatio;PR open/closed
+		;PR open;PR closed;Ratio PR open/closed
 		;nb commits;nb jours dernier jour avec commit;nb jours 5eme dernier jour avec commit;commit sous 3 mois
-		;nb contributeurs
+		;nb contributeurs;nb stars;nb fork
 		<br />
 	';
 	foreach ($repos as $repo) {

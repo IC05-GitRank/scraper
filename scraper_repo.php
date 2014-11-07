@@ -18,10 +18,14 @@
 			HOME
 		*********************************/
 		$html = file_get_html('http://github.com/'.$repo.'');
-		$numbers_summary = $html->find('ul.numbers-summary li a span.num');
 
+		$numbers_summary = $html->find('ul.numbers-summary li a span.num');
 		$nb_commits = extractNumber($numbers_summary[0]->plaintext);
 		$nb_contributors = extractNumber($numbers_summary[3]->plaintext);
+
+		$pagehead_actions = $html->find('ul.pagehead-actions a.social-count');
+		$nb_stars = extractNumber($pagehead_actions[0]->plaintext);
+		$nb_fork = extractNumber($pagehead_actions[1]->plaintext);
 
 		/********************************
 			ISSUES
@@ -110,7 +114,7 @@
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
 				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
 				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months".
-				";$nb_contributors";
+				";$nb_contributors;$nb_stars;$nb_fork";
 	}
 	echo scraperRepo(@$_GET['name']);
 ?>
