@@ -4,8 +4,10 @@
 		return 	intval(
 					str_replace(',', '', // 3,666 to 3666
 						trim(
-							htmlspecialchars_decode(
-								$s
+							preg_replace('/[a-zA-Z]/','',
+								htmlspecialchars_decode(
+									$s
+								)
 							)
 						)
 					)
@@ -89,6 +91,24 @@
 		$commit_since_3_months = 'oui';
 		if($nb_jours_last_commit > 91)
 			$commit_since_3_months = 'non';
+
+		/********************************
+			CONTRIBUTORS
+		*********************************/
+		/* NE FONCTIONNE PAS, la page est chargée en AJAX donc file_get_html ne voit aucune donnée
+		$html = file_get_html('http://github.com/'.$repo.'/graphs/contributors');
+		$i = 0;
+		foreach ($html->find('div#contributors li.capped-card h3 span.ameta span.cmeta a.cmt') as $contributor)
+		{
+			$contributors[$i] = extractNumber($contributor->plaintext);
+			echo $contributors[$i].'<br>';
+			$i++;
+		}
+		*/
+
+		/********************************
+			END
+		*********************************/
 
 		return 	"$repo".
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
