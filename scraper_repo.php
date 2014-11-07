@@ -1,5 +1,17 @@
 <?php
-	function scraper_repo($repo)
+	function extractNumber($s)
+	{
+		return 	intval(
+					str_replace(',', '', // 3,666 to 3666
+						trim(
+							htmlspecialchars_decode(
+								$s
+							)
+						)
+					)
+				);
+	}
+	function scraperRepo($repo)
 	{
 		require_once('simple_html_dom/simple_html_dom.php');
 		$now = new DateTime();
@@ -13,7 +25,7 @@
 		$i = 0;
 		foreach ($html->find('div.table-list-header-toggle a.button-link') as $temp)
 		{
-			$values[$i] = intval(trim(htmlspecialchars_decode($temp->plaintext)));
+			$values[$i] = extractNumber($temp->plaintext);
 			$i++;
 		}
 		$nb_issues_open = intval($values[0]);
@@ -31,7 +43,7 @@
 		$i = 0;
 		foreach ($html->find('div.table-list-header-toggle a.button-link') as $temp)
 		{
-			$values[$i] = intval(trim(htmlspecialchars_decode($temp->plaintext)));
+			$values[$i] = extractNumber($temp->plaintext);
 			$i++;
 		}
 		$nb_PR_open = intval($values[0]);
@@ -71,5 +83,5 @@
 
 		return "$repo;$nb_issues_open;$nb_issues_closed;$ratio_issues;$nb_PR_open;$nb_PR_closed;$ratio_PR;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months";
 	}
-	echo scraper_repo(@$_GET['name']);
+	echo scraperRepo(@$_GET['name']);
 ?>
