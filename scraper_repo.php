@@ -28,7 +28,7 @@
 		$nb_stars = extractNumber($pagehead_actions[0]->plaintext);
 		$nb_fork = extractNumber($pagehead_actions[1]->plaintext);
 
-		while($nb_contributors == 0) // Correction bug
+		for($i = 0; $i < 3 && $nb_contributors == 0; $i++) // Correction bug, 3 essais supp
 		{
 			$html = file_get_html('http://github.com/'.$repo.'');
 			$nb_contributors = extractNumber($numbers_summary[3]->plaintext);
