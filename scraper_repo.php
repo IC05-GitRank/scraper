@@ -148,7 +148,7 @@
 			// Last release
 			if(!empty($values[0]))
 			{
-				$date_last_release = new DateTime(trim($values[0]->title));
+				$date_last_release = new DateTime(trim($values[0]->plaintext));
 				$nb_jours_last_release = $now->diff($date_last_release)->format("%a");
 			}
 		}
@@ -157,14 +157,14 @@
 			END
 		*********************************/
 
-		return 	"$repo".
+		return 	$nb_jours_last_release;/*"$repo".
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
 				";$nb_jours_last_activity_issue;$nb_jours_5th_activity_issue".
 				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
 				";$nb_jours_last_activity_PR;$nb_jours_5th_activity_PR".
 				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months".
 				";$nb_contributors;$nb_stars;$nb_fork".
-				";$nb_releases;$nb_jours_last_release";
+				";$nb_releases;$nb_jours_last_release";*/
 	}
 	echo scraperRepo(@$_GET['name']);
 ?>
