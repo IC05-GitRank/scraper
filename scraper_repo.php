@@ -149,7 +149,7 @@
 			if(!empty($values[0]))
 			{
 				$date_last_release = new DateTime(trim($values[0]->title));
-				$nb_jours_last_release = $now->diff($date_last_commit)->format("%a");
+				$nb_jours_last_release = $now->diff($date_last_release)->format("%a");
 			}
 		}
 
