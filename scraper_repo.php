@@ -21,11 +21,18 @@
 
 		$numbers_summary = $html->find('ul.numbers-summary li a span.num');
 		$nb_commits = extractNumber($numbers_summary[0]->plaintext);
+		$nb_releases = extractNumber($numbers_summary[2]->plaintext);
 		$nb_contributors = extractNumber($numbers_summary[3]->plaintext);
 
 		$pagehead_actions = $html->find('ul.pagehead-actions a.social-count');
 		$nb_stars = extractNumber($pagehead_actions[0]->plaintext);
 		$nb_fork = extractNumber($pagehead_actions[1]->plaintext);
+
+		while($nb_contributors == 0) // Correction bug
+		{
+			$html = file_get_html('http://github.com/'.$repo.'');
+			$nb_contributors = extractNumber($numbers_summary[3]->plaintext);
+		}
 
 		/********************************
 			ISSUES
@@ -107,6 +114,23 @@
 		*/
 
 		/********************************
+			RELEASES
+		*********************************/
+		$nb_jours_last_release = 0;
+		if($nb_releases > 0)
+		{
+			$html = file_get_html('http://github.com/'.$repo.'/tags');
+
+			$values = $html->find('td.date time');
+			// Last release
+			if(!empty($values[0]))
+			{
+				$date_last_release = new DateTime(trim($values[0]->title));
+				$nb_jours_last_release = $now->diff($date_last_commit)->format("%a");
+			}
+		}
+
+		/********************************
 			END
 		*********************************/
 
@@ -114,7 +138,8 @@
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
 				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
 				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months".
-				";$nb_contributors;$nb_stars;$nb_fork";
+				";$nb_contributors;$nb_stars;$nb_fork".
+				";$nb_releases;$nb_jours_last_release";
 	}
 	echo scraperRepo(@$_GET['name']);
 ?>

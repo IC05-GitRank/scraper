@@ -12,6 +12,7 @@
 		;PR open;PR closed;Ratio PR open/closed
 		;nb commits;nb jours dernier jour avec commit;nb jours 5eme dernier jour avec commit;commit sous 3 mois
 		;nb contributeurs;nb stars;nb fork
+		;nb releases;nb jours dernier release
 		<br />
 	';
 	foreach ($repos as $repo) {
@@ -20,6 +21,7 @@
 	}
 	echo '</p>';
 ?>
+
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
