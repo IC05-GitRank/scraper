@@ -37,20 +37,32 @@
 		/********************************
 			ISSUES
 		*********************************/
-		$html = file_get_html('http://github.com/'.$repo.'/issues');
+		$html = file_get_html('http://github.com/'.$repo.'/issues?q=sort%3Aupdated-desc+is%3Aissue');
 
 		// ratio issues open/closed
 		$i = 0;
-		foreach ($html->find('div.table-list-header-toggle a.button-link') as $temp)
-		{
-			$values[$i] = extractNumber($temp->plaintext);
-			$i++;
-		}
-		$nb_issues_open = intval($values[0]);
-		$nb_issues_closed = intval($values[1]);
+		$temp = $html->find('div.table-list-header-toggle a.button-link');
+		$nb_issues_open = extractNumber($temp[0]->plaintext);
+		$nb_issues_closed = extractNumber($temp[1]->plaintext);
 		$ratio_issues = 0;
 		if($nb_issues_closed > 0)
 			$ratio_issues = $nb_issues_open / $nb_issues_closed;
+
+		// Last activity
+		$nb_jours_last_activity_issue = 0;
+		$nb_jours_5th_activity_issue = 0;
+		if($nb_issues_open + $nb_issues_closed > 0)
+		{
+			$temp = $html->find('div.issue-meta time');
+			
+			$date_last_activity_issue = new DateTime(trim($temp[0]->plaintext));
+			$nb_jours_last_activity_issue = $now->diff($date_last_activity_issue)->format("%a");
+			if(!empty($temp[4]))
+			{
+				$date_5th_activity_issue = new DateTime(trim($temp[4]->plaintext));
+				$nb_jours_5th_activity_issue = $now->diff($date_5th_activity_issue)->format("%a");
+			}
+		}
 
 		/********************************
 			PULL_REQUEST
@@ -58,14 +70,9 @@
 		$html = file_get_html('http://github.com/'.$repo.'/pulls?q=is%3Apr+sort%3Aupdated-desc+');
 
 		// ratio PR open/closed
-		$i = 0;
-		foreach ($html->find('div.table-list-header-toggle a.button-link') as $temp)
-		{
-			$values[$i] = extractNumber($temp->plaintext);
-			$i++;
-		}
-		$nb_PR_open = intval($values[0]);
-		$nb_PR_closed = intval($values[1]);
+		$temp = $html->find('div.table-list-header-toggle a.button-link');
+		$nb_PR_open = extractNumber($temp[0]->plaintext);
+		$nb_PR_closed = extractNumber($temp[1]->plaintext);
 		$ratio_PR = 0;
 		if($nb_PR_closed > 0)
 			$ratio_PR = $nb_PR_open / $nb_PR_closed;
@@ -152,6 +159,7 @@
 
 		return 	"$repo".
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
+				";$nb_jours_last_activity_issue;$nb_jours_5th_activity_issue".
 				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
 				";$nb_jours_last_activity_PR;$nb_jours_5th_activity_PR".
 				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months".

@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Scraper for GitRank project</title>
 	</head>
 	<body>
@@ -9,6 +10,7 @@
 	echo '<p id="repos_csv">
 		Repo
 		;Issues open;Issues closed;Ratio issues open/closed
+		;nb jours dernière activité issue;nb jours 5e activité issue
 		;PR open;PR closed;Ratio PR open/closed
 		;nb jours dernière activité PR;nb jours 5e activité PR
 		;nb commits;nb jours dernier jour avec commit;nb jours 5eme dernier jour avec commit;commit sous 3 mois
