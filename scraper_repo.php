@@ -55,7 +55,7 @@
 		/********************************
 			PULL_REQUEST
 		*********************************/
-		$html = file_get_html('http://github.com/'.$repo.'/pulls');
+		$html = file_get_html('http://github.com/'.$repo.'/pulls?q=is%3Apr+sort%3Aupdated-desc+');
 
 		// ratio PR open/closed
 		$i = 0;
@@ -69,6 +69,22 @@
 		$ratio_PR = 0;
 		if($nb_PR_closed > 0)
 			$ratio_PR = $nb_PR_open / $nb_PR_closed;
+
+		// Last activity
+		$nb_jours_last_activity_PR = 0;
+		$nb_jours_5th_activity_PR = 0;
+		if($nb_PR_open + $nb_PR_closed > 0)
+		{
+			$temp = $html->find('div.issue-meta time');
+			
+			$date_last_activity_PR = new DateTime(trim($temp[0]->plaintext));
+			$nb_jours_last_activity_PR = $now->diff($date_last_activity_PR)->format("%a");
+			if(!empty($temp[4]))
+			{
+				$date_5th_activity_PR = new DateTime(trim($temp[4]->plaintext));
+				$nb_jours_5th_activity_PR = $now->diff($date_5th_activity_PR)->format("%a");
+			}
+		}
 
 
 		/********************************
@@ -137,6 +153,7 @@
 		return 	"$repo".
 				";$nb_issues_open;$nb_issues_closed;$ratio_issues".
 				";$nb_PR_open;$nb_PR_closed;$ratio_PR".
+				";$nb_jours_last_activity_PR;$nb_jours_5th_activity_PR".
 				";$nb_commits;$nb_jours_last_commit;$nb_jours_5th_day_commit;$commit_since_3_months".
 				";$nb_contributors;$nb_stars;$nb_fork".
 				";$nb_releases;$nb_jours_last_release";

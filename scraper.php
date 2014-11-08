@@ -10,6 +10,7 @@
 		Repo
 		;Issues open;Issues closed;Ratio issues open/closed
 		;PR open;PR closed;Ratio PR open/closed
+		;nb jours dernière activité PR;nb jours 5e activité PR
 		;nb commits;nb jours dernier jour avec commit;nb jours 5eme dernier jour avec commit;commit sous 3 mois
 		;nb contributeurs;nb stars;nb fork
 		;nb releases;nb jours dernier release
